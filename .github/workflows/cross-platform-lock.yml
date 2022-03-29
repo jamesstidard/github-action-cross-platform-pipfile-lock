@@ -1,12 +1,4 @@
 name: Cross-Platform Pipenv Lock
-
-# Triggers on dev pushes for testing and
-# Only when tagging on master as there shouldn't
-# be any standalone commit on master. everything
-# should be done in dev and only merged and tagged
-# in master
-# Also, only need to run this when dependencies change
-# in Pipfile.lock
 on:
   push:
     branches:
@@ -45,7 +37,7 @@ jobs:
   windows_lock:
     name: Windows Lock
     runs-on: windows-latest
-    if: ${{ env.LOCK_WINDOWS }}
+    if: env.LOCK_WINDOWS
 
     env:
       PIPENV_VENV_IN_PROJECT: true
