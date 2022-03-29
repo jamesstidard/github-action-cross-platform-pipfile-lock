@@ -37,7 +37,7 @@ jobs:
   windows_lock:
     name: Windows Lock
     runs-on: windows-latest
-    if: ${{ fromJSON(env.LOCK_WINDOWS) }}
+    if: ${{ github.event.inputs.lock_windows != 'false' }}
 
     env:
       PIPENV_VENV_IN_PROJECT: true
