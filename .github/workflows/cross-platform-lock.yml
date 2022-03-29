@@ -1,0 +1,77 @@
+name: Cross-Platform Pipenv Lock
+
+# Triggers on dev pushes for testing and
+# Only when tagging on master as there shouldn't
+# be any standalone commit on master. everything
+# should be done in dev and only merged and tagged
+# in master
+# Also, only need to run this when dependencies change
+# in Pipfile.lock
+on:
+  push:
+    paths:
+        - .github/workflows/cross-platform-pipenv.yml
+        - Pipfile.lock
+  # Manual dispatch
+  workflow_dispatch:
+    inputs:
+      lock_windows:
+        description: 'Lock for Windows'
+        required: true
+        default: 'auto'
+      lock_ubuntu:
+        description: 'Lock for Ubuntu'
+        required: true
+        default: 'auto'
+      lock_macos:
+        description: 'Lock for macOS'
+        required: true
+        default: 'auto'
+
+env:
+  LOCK_WINDOWS: ${{ github.event.inputs.lock_windows != 'false' }}
+  LOCK_UBUNTU: ${{ github.event.inputs.lock_ubuntu != 'false' }}
+  LOCK_MACOS: ${{ github.event.inputs.lock_macos != 'false' }}
+  PYTHON_VERSION: '3.8'
+
+jobs:
+# ============================================================================ #
+#                                                                              #
+#                               LINUX LOCK                                     #
+#                                                                              #
+# ============================================================================ #
+  windows_lock:
+    name: Windows Lock
+    runs-on: windows-latest
+    if: ${{ env.BUILD_UBUNTU }}
+
+    env:
+      PIPENV_VENV_IN_PROJECT: true
+      PIPENV_IGNORE_VIRTUALENVS: true
+      PIPENV_TIMEOUT: 60000
+      PYTHONPATH: ${{ github.workspace }}
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.BUILD_KEY }}
+      - name: Install Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          architecture: 'x64'
+      - run: python -m pip install --user pipenv
+      - name: Lock Windows Dependencies
+        run: pipenv lock --keep-outdated --python "C:\Users\runner\AppData\Local\Programs\Python\Python38\python.exe"
+      - name: Save Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: pipfile-lock
+          path: Pipfile.lock
+          if-no-files-found: error
+          retention-days: 1
