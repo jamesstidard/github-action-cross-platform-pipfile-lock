@@ -27,7 +27,7 @@ env:
 
 jobs:
   prepare:
-    name: Prepare Initial Pipfile
+    name: Prepare Lock
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -46,7 +46,7 @@ jobs:
     name: Windows Lock
     runs-on: windows-latest
     needs: [prepare]
-    if: ${{ github.event.inputs.lock_windows != 'false' }}
+    if: ${{ always() && github.event.inputs.lock_windows != 'false' }}
     env:
       PIPENV_VENV_IN_PROJECT: true
       PIPENV_IGNORE_VIRTUALENVS: true
@@ -84,7 +84,7 @@ jobs:
     name: Ubuntu Lock
     runs-on: ubuntu-latest
     needs: [windows_lock]
-    if: ${{ github.event.inputs.lock_ubuntu != 'false' }}
+    if: ${{ always() && github.event.inputs.lock_ubuntu != 'false' }}
     env:
       PIPENV_VENV_IN_PROJECT: true
       PIPENV_IGNORE_VIRTUALENVS: true
@@ -119,7 +119,7 @@ jobs:
     name: macOS Lock
     runs-on: macos-latest
     needs: [ubuntu_lock]
-    if: ${{ github.event.inputs.lock_macos != 'false' }}
+    if: ${{ always() && github.event.inputs.lock_macos != 'false' }}
     env:
       PIPENV_VENV_IN_PROJECT: true
       PIPENV_IGNORE_VIRTUALENVS: true
@@ -153,6 +153,7 @@ jobs:
   commit_lock:
     name: Commit Lock
     needs: [windows_lock, ubuntu_lock, macos_lock]
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
