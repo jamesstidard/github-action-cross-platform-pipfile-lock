@@ -150,16 +150,15 @@ jobs:
           retention-days: 1
 
   commit_lock:
-    name: Commit Cross Platform Lock
+    name: Commit Lock
     needs: [windows_lock, ubuntu_lock, macos_lock]
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Load Final Lock
-        uses: ./private-actions/local-artifact
+      - name: Load Lock
+        uses: actions/download-artifact@v2
         with:
-          action: restore
           name: pipfile-lock
       - name: Commit
         uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
