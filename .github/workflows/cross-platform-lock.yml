@@ -48,7 +48,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: 'x64'
-      - run: python -m pip install --user pipenv
+      - run: python -m pip install pipenv
       - name: Lock Windows Dependencies
         run: pipenv lock --keep-outdated
       - name: Save Artifact
@@ -83,7 +83,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: 'x64'
-      - run: python -m pip install --user pipenv
+      - run: python -m pip install pipenv
       - name: Lock Windows Dependencies
         run: pipenv lock --keep-outdated
       - name: Save Lock
@@ -98,7 +98,7 @@ jobs:
     name: macOS Lock
     runs-on: macos-latest
     needs: [ubuntu_lock]
-    if: ${{ github.event.inputs.lock_ubuntu != 'false' }}
+    if: ${{ github.event.inputs.lock_macos != 'false' }}
     env:
       PIPENV_VENV_IN_PROJECT: true
       PIPENV_IGNORE_VIRTUALENVS: true
@@ -118,7 +118,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           architecture: 'x64'
-      - run: python -m pip install --user pipenv
+      - run: python -m pip install pipenv
       - name: Lock Windows Dependencies
         run: pipenv lock --keep-outdated
       - name: Save Lock
