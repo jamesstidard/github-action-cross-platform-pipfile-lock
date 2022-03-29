@@ -45,6 +45,7 @@ jobs:
   windows_lock:
     name: Windows Lock
     runs-on: windows-latest
+    needs: [prepare]
     if: ${{ github.event.inputs.lock_windows != 'false' }}
     env:
       PIPENV_VENV_IN_PROJECT: true
