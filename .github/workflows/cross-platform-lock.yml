@@ -75,9 +75,8 @@ jobs:
         with:
           ssh-key: ${{ secrets.BUILD_KEY }}
       - name: Load Lock
-        uses: actions/upload-artifact@v2
+        uses: actions/download-artifact@v2
         with:
-          action: restore
           name: pipfile-lock
       - name: Install Python
         uses: actions/setup-python@v3
