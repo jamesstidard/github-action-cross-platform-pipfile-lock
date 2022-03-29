@@ -37,7 +37,7 @@ jobs:
   windows_lock:
     name: Windows Lock
     runs-on: windows-latest
-    if: env.LOCK_WINDOWS
+    if: ${{ fromJSON(env.LOCK_WINDOWS) }}
 
     env:
       PIPENV_VENV_IN_PROJECT: true
