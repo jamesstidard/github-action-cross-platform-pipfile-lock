@@ -12,7 +12,7 @@ on:
     branches:
       - '*'
     paths:
-      - .github/workflows/cross-platform-pipenv.yml
+      - .github/workflows/cross-platform-lock.yml
       - Pipfile.lock
   # Manual dispatch
   workflow_dispatch:
