@@ -9,6 +9,8 @@ name: Cross-Platform Pipenv Lock
 # in Pipfile.lock
 on:
   push:
+    branches:
+      - '*'
     paths:
       - .github/workflows/cross-platform-pipenv.yml
       - Pipfile.lock
