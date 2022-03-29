@@ -128,3 +128,28 @@ jobs:
           path: Pipfile.lock
           if-no-files-found: error
           retention-days: 1
+
+  commit_lock:
+    name: Commit Cross Platform Lock
+    needs: [windows_lock, ubuntu_lock, macos_lock]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Get Private Actions
+        uses: actions/checkout@v2
+        with:
+          repository: WaveVenture/github_actions
+          ssh-key: ${{ secrets.BUILD_KEY }}
+          path: private-actions
+      - name: Load Final Lock
+        uses: ./private-actions/local-artifact
+        with:
+          action: restore
+          name: pipfile-lock
+      - name: Commit
+        uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
+        with:
+          add: 'Pipfile.lock'
+          author_name: Workflow Action CI
+          message: 'CI: Cross-Platform Pipfile.lock'
