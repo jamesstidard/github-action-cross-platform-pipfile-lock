@@ -136,12 +136,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Get Private Actions
-        uses: actions/checkout@v2
-        with:
-          repository: WaveVenture/github_actions
-          ssh-key: ${{ secrets.BUILD_KEY }}
-          path: private-actions
       - name: Load Final Lock
         uses: ./private-actions/local-artifact
         with:
