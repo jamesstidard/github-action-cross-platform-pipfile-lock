@@ -10,8 +10,8 @@ name: Cross-Platform Pipenv Lock
 on:
   push:
     paths:
-        - .github/workflows/cross-platform-pipenv.yml
-        - Pipfile.lock
+      - .github/workflows/cross-platform-pipenv.yml
+      - Pipfile.lock
   # Manual dispatch
   workflow_dispatch:
     inputs:
@@ -43,7 +43,7 @@ jobs:
   windows_lock:
     name: Windows Lock
     runs-on: windows-latest
-    if: ${{ env.BUILD_UBUNTU }}
+    if: ${{ env.LOCK_WINDOWS }}
 
     env:
       PIPENV_VENV_IN_PROJECT: true
